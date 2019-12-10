@@ -5,8 +5,8 @@ const mysql = require('mysql');
 
 const app = express();
 
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 // Add the credentials to access your database
 /*var connection = mysql.createConnection({
@@ -34,11 +34,13 @@ const db = mysql.createConnection({
 db.connect(function(err) {
     // in case of error
     if(err){
-        console.log("Connection Failed")
+        console.log("Connection Failed");
+        console.log( "Host:" + process.env.OPENSHIFT_MYSQL_DB_HOST );
         console.log(err.code);
         console.log(err);
         return;
     }
+    console.log("Connected to db");
 });
 
 // Perform a query
@@ -68,5 +70,5 @@ Port : 3306
 */
 
 app.listen(server_port, server_ip_address, function () {
-    console.log( "Listening on " + server_ip_address + ", port " + server_port )
+    console.log( "Listening on " + server_ip_address + ", port " + server_port );
 });
