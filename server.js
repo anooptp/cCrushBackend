@@ -5,16 +5,29 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 var mysql = require('mysql');
 
 // Add the credentials to access your database
-var connection = mysql.createConnection({
+/*var connection = mysql.createConnection({
     host: 'mysql-gamification.inmbzp8022.in.dst.ibm.com',
     port: '3306',
     user: 'xxuser',
     password: 'welcome1',
     database: 'sampledb'  
 });
-
+var connection = mysql.createConnection({
+ host     : 'mysql.gamification.svc.cluster.local',
+ port     : '3306',
+ user     : 'xxuser',
+ password : 'welcome1',
+ database : 'sampledb'
+});*/
+const db = mysql.createConnection({
+    host: process.env.OPENSHIFT_MYSQL_DB_HOST,
+    port: process.env.OPENSHIFT_MYSQL_DB_PORT,
+    user: process.env.OPENSHIFT_MYSQL_USER,
+    password: process.env.OPENSHIFT_MYSQL_PASSWORD,
+    database : process.env.OPENSHIFT_MYSQL_DATABASE
+   });
 // connect to mysql
-connection.connect(function(err) {
+db.connect(function(err) {
     // in case of error
     if(err){
         console.log("Connection Failed")
@@ -27,7 +40,7 @@ connection.connect(function(err) {
 // Perform a query
 $query = 'SELECT * FROM XXIBM_PRODUCT_CATALOGUE LIMIT 10';
 
-connection.query($query, function(err, rows, fields) {
+db.query($query, function(err, rows, fields) {
     if(err){
         console.log("An error ocurred performing the query.");
         return;
@@ -37,7 +50,7 @@ connection.query($query, function(err, rows, fields) {
 });
 
 // Close the connection
-connection.end(function(){
+db.end(function(){
     // The connection has been closed
 });
 
