@@ -1,8 +1,12 @@
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+const express = require('express');
 
 // Get the mysql service
-var mysql = require('mysql');
+const mysql = require('mysql');
+
+const app = express();
+
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
 // Add the credentials to access your database
 /*var connection = mysql.createConnection({
@@ -63,7 +67,6 @@ Host: mysql-gamification.inmbzp8022.in.dst.ibm.com
 Port : 3306
 */
 
-server.listen(server_port, server_ip_address, function () {
+app.listen(server_port, server_ip_address, function () {
     console.log( "Listening on " + server_ip_address + ", port " + server_port )
 });
-  
