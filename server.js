@@ -59,7 +59,7 @@ app.get('/', function(req, res) {
       if (err) {
         res.send('NOT OK' + JSON.stringify(err));
       } else {
-        res.send('OK: ' + JSON.stringify(rows[0]));
+        res.send('OK: ' + JSON.stringify(rows));
       }
     });
   });
