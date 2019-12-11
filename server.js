@@ -46,7 +46,6 @@ db.connect(function(err) {
 // Perform a query
 $query = 'SELECT * FROM XXIBM_PRODUCT_CATALOGUE LIMIT 10';
 
-/*
 db.query($query, function(err, rows, fields) {
     if(err){
         console.log("An error ocurred performing the query.");
@@ -54,7 +53,6 @@ db.query($query, function(err, rows, fields) {
     }
     console.log("Query succesfully executed: ", rows);
 });
-*/
 
 app.get('/', function(req, res) {
     db.query($query, function(err, rows, fields) {
@@ -67,9 +65,9 @@ app.get('/', function(req, res) {
   });
   
 // Close the connection
-db.end(function(){
+/*db.end(function(){
     // The connection has been closed
-});
+});*/
 
 app.listen(server_port, server_ip_address, function () {
     console.log( "Listening on " + server_ip_address + ", port " + server_port );
