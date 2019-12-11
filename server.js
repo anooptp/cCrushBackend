@@ -46,14 +46,15 @@ db.connect(function(err) {
 // Perform a query
 $query = 'SELECT * FROM XXIBM_PRODUCT_CATALOGUE LIMIT 10';
 
+/*
 db.query($query, function(err, rows, fields) {
     if(err){
         console.log("An error ocurred performing the query.");
         return;
     }
-
     console.log("Query succesfully executed: ", rows);
 });
+*/
 
 app.get('/', function(req, res) {
     db.query($query, function(err, rows, fields) {
