@@ -36,15 +36,10 @@ db.getConnection(function(err, connection) {
 
 // Perform a query
 $query = 'SELECT * FROM XXIBM_PRODUCT_CATALOGUE LIMIT 10';
-
-/*db.query($query, function(err, rows, fields) {
-    if(err){
-        console.log("An error ocurred performing the query.");
-        return;
-    }
-    console.log("Query succesfully executed: ", rows);
-});
-*/
+$query_catalogue = 'SELECT * FROM XXIBM_PRODUCT_CATALOGUE';
+$query_pricing = 'SELECT * FROM XXIBM_PRODUCT_PRICING';
+$query_sku = 'SELECT * FROM XXIBM_PRODUCT_SKU';
+$query_style = 'SELECT * FROM XXIBM_PRODUCT_STYLE';
 
 app.get('/', function(req, res) {
     console.log('API CALL: /');
@@ -54,19 +49,93 @@ app.get('/', function(req, res) {
           console.log(' Error getting db connection: ' + err);
           throw err;
       }
-      connection.query($query, function(err, rows, fields) {
-        if (err) {
-          //res.send('NOT OK' + JSON.stringify(err));
-          res.json(err); 
+      connection.query($query, function(err2, rows, fields) {
+        if (err2) {
+          res.json(err2); 
         } else {
-          //res.send('OK: ' + JSON.stringify(rows));
           res.json(rows); 
         }
       });
       connection.release();
     });
 });
-  
+
+app.get('/api/catalogue', function(req, res) {
+  console.log('API CALL: /api/catalogue');
+  db.getConnection(function(err, connection) {
+    if (err) {
+      connection.release();
+        console.log(' Error getting db connection: ' + err);
+        throw err;
+    }
+    connection.query($query_catalogue, function(err2, rows, fields) {
+      if (err2) {
+        res.json(err2); 
+      } else {
+        res.json(rows); 
+      }
+    });
+    connection.release();
+  });
+});
+
+app.get('/api/pricing', function(req, res) {
+  console.log('API CALL: /api/pricing');
+  db.getConnection(function(err, connection) {
+    if (err) {
+      connection.release();
+        console.log(' Error getting db connection: ' + err);
+        throw err;
+    }
+    connection.query($query_pricing, function(err2, rows, fields) {
+      if (err2) {
+        res.json(err2); 
+      } else {
+        res.json(rows); 
+      }
+    });
+    connection.release();
+  });
+});
+
+app.get('/api/sku', function(req, res) {
+  console.log('API CALL: /api/sku');
+  db.getConnection(function(err, connection) {
+    if (err) {
+      connection.release();
+        console.log(' Error getting db connection: ' + err);
+        throw err;
+    }
+    connection.query($query_sku, function(err2, rows, fields) {
+      if (err2) {
+        res.json(err2); 
+      } else {
+        res.json(rows); 
+      }
+    });
+    connection.release();
+  });
+});
+
+app.get('/api/style', function(req, res) {
+  console.log('API CALL: /api/sku');
+  db.getConnection(function(err, connection) {
+    if (err) {
+      connection.release();
+        console.log(' Error getting db connection: ' + err);
+        throw err;
+    }
+    connection.query($query_style, function(err2, rows, fields) {
+      if (err2) {
+        res.json(err2); 
+      } else {
+        res.json(rows); 
+      }
+    });
+    connection.release();
+  });
+});
+
 app.get('/api/database/status',function(req,res) {
     console.log('API CALL: /api/database/status');
     var retvalSettingValue = "?";
