@@ -56,15 +56,18 @@ app.get('/', function(req, res) {
       }
       connection.query($query, function(err, rows, fields) {
         if (err) {
-          res.send('NOT OK' + JSON.stringify(err));
+          //res.send('NOT OK' + JSON.stringify(err));
+          res.json(err); 
         } else {
-          res.send('OK: ' + JSON.stringify(rows));
+          //res.send('OK: ' + JSON.stringify(rows));
+          res.json(rows); 
         }
       });
+      connection.release();
     });
 });
   
-  app.get('/api/database/status',function(req,res) {
+app.get('/api/database/status',function(req,res) {
     console.log('API CALL: /api/database/status');
     var retvalSettingValue = "?";
     db.getConnection(function(err, connection) {
@@ -93,7 +96,7 @@ app.get('/', function(req, res) {
             res.json(data); 
           }
         }
-        console.log(' mysql_pool.release()');
+        console.log('db.release()');
         connection.release();
         });
     });
