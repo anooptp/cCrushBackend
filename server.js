@@ -32,6 +32,7 @@ db.getConnection(function(err, connection) {
         throw err;
     }
     console.log("Connected to db");
+    connection.release();
 });
 
 // Perform a query
@@ -135,42 +136,6 @@ app.get('/api/style', function(req, res) {
     connection.release();
   });
 });
-
-app.get('/api/database/status',function(req,res) {
-    console.log('API CALL: /api/database/status');
-    var retvalSettingValue = "?";
-    db.getConnection(function(err, connection) {
-      if (err) {
-        connection.release();
-          console.log(' Error getting db connection: ' + err);
-          throw err;
-        }
-        connection.query('SELECT SettingValue FROM your_database_table WHERE SettingKey =\'DatabaseStatus\'', function(err2, rows, fields) {	
-          if (err2) {
-          var data = { "Time":"", "DatabaseStatus":"" };
-          data["Time"] = (new Date()).getTime();
-          data["DatabaseStatus"] = "Down";
-          res.json(data); 
-        } else {
-          var dbretval = rows[0].SettingValue;
-          if (dbretval == 1 ) {
-            var data = { "Time":"", "DatabaseStatus":"" };
-            data["Time"] = (new Date()).getTime();
-            data["DatabaseStatus"] = "Up";
-            res.json(data); 
-          } else {
-            var data = { "Time":"", "DatabaseStatus":"" };
-            data["Time"] = (new Date()).getTime();
-            data["DatabaseStatus"] = "Down";
-            res.json(data); 
-          }
-        }
-        console.log('db.release()');
-        connection.release();
-        });
-    });
-  });
-  
 
 app.listen(server_port, server_ip_address, function () {
     console.log( "Listening on " + server_ip_address + ", port " + server_port );
