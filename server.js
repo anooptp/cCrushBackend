@@ -176,6 +176,17 @@ app.get('/api/all', function(req, res) {
   });
 });
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PATCH, DELETE, OPTIONS, PUT");
+  next();
+});
+
 app.listen(server_port, server_ip_address, function () {
     console.log( "Listening on " + server_ip_address + ", port " + server_port );
 });
