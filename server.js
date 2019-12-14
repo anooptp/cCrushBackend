@@ -35,12 +35,32 @@ db.getConnection(function(err, connection) {
     connection.release();
 });
 
+/*
+SELECT * 
+  FROM XXIBM_PRODUCT_SKU psk,
+       XXIBM_PRODUCT_STYLE pst,
+       XXIBM_PRODUCT_PRICING ppr,
+       XXIBM_PRODUCT_CATALOGUE pct
+ WHERE pst.ITEM_NUMBER = psk.STYLE_ITEM
+   AND pst.CATALOGUE_CATEGORY = pct.COMMODITY
+   AND psk.ITEM_NUMBER = ppr.ITEM_NUMBER
+   AND psk.CATALOGUE_CATEGORY = pst.CATALOGUE_CATEGORY
+*/
 // Perform a query
 $query = 'SELECT * FROM XXIBM_PRODUCT_CATALOGUE LIMIT 10';
 $query_catalogue = 'SELECT * FROM XXIBM_PRODUCT_CATALOGUE';
 $query_pricing = 'SELECT * FROM XXIBM_PRODUCT_PRICING';
 $query_sku = 'SELECT * FROM XXIBM_PRODUCT_SKU';
 $query_style = 'SELECT * FROM XXIBM_PRODUCT_STYLE';
+$query_all_join = `SELECT * 
+FROM XXIBM_PRODUCT_SKU psk,
+     XXIBM_PRODUCT_STYLE pst,
+     XXIBM_PRODUCT_PRICING ppr,
+     XXIBM_PRODUCT_CATALOGUE pct
+WHERE pst.ITEM_NUMBER = psk.STYLE_ITEM
+ AND pst.CATALOGUE_CATEGORY = pct.COMMODITY
+ AND psk.ITEM_NUMBER = ppr.ITEM_NUMBER
+ AND psk.CATALOGUE_CATEGORY = pst.CATALOGUE_CATEGORY`;
 
 app.get('/', function(req, res) {
     console.log('API CALL: /');
@@ -127,6 +147,25 @@ app.get('/api/style', function(req, res) {
         throw err;
     }
     connection.query($query_style, function(err2, rows, fields) {
+      if (err2) {
+        res.json(err2); 
+      } else {
+        res.json(rows); 
+      }
+    });
+    connection.release();
+  });
+});
+
+app.get('/api/all', function(req, res) {
+  console.log('API CALL: /api/all');
+  db.getConnection(function(err, connection) {
+    if (err) {
+      connection.release();
+        console.log(' Error getting db connection: ' + err);
+        throw err;
+    }
+    connection.query($query_all_join, function(err2, rows, fields) {
       if (err2) {
         res.json(err2); 
       } else {
