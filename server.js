@@ -2,7 +2,6 @@ const express = require('express');
 const mysql = require('mysql');
 
 const app = express();
-var http = require('http').Server(app);
 var bodyParser = require("body-parser");
 
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -72,9 +71,9 @@ app.get('/', function(req, res) {
       }
       connection.query($query, function(err2, rows, fields) {
         if (err2) {
-          res.json(err2); 
+          res.status(404).json(err2); 
         } else {
-          res.json(rows); 
+          res.status(200).json(rows); 
         }
       });
       connection.release();
@@ -91,9 +90,9 @@ app.get('/api/catalogue', function(req, res) {
     }
     connection.query($query_catalogue, function(err2, rows, fields) {
       if (err2) {
-        res.json(err2); 
+        res.status(404).json(err2); 
       } else {
-        res.json(rows); 
+        res.status(200).json(rows); 
       }
     });
     connection.release();
@@ -110,9 +109,9 @@ app.get('/api/pricing', function(req, res) {
     }
     connection.query($query_pricing, function(err2, rows, fields) {
       if (err2) {
-        res.json(err2); 
+        res.status(404).json(err2); 
       } else {
-        res.json(rows); 
+        res.status(200).json(rows); 
       }
     });
     connection.release();
@@ -129,9 +128,9 @@ app.get('/api/sku', function(req, res) {
     }
     connection.query($query_sku, function(err2, rows, fields) {
       if (err2) {
-        res.json(err2); 
+        res.status(404).json(err2); 
       } else {
-        res.json(rows); 
+        res.status(200).json(rows); 
       }
     });
     connection.release();
@@ -148,9 +147,9 @@ app.get('/api/style', function(req, res) {
     }
     connection.query($query_style, function(err2, rows, fields) {
       if (err2) {
-        res.json(err2); 
+        res.status(404).json(err2); 
       } else {
-        res.json(rows); 
+        res.status(200).json(rows); 
       }
     });
     connection.release();
@@ -167,9 +166,10 @@ app.get('/api/all', function(req, res) {
     }
     connection.query($query_all_join, function(err2, rows, fields) {
       if (err2) {
-        res.json(err2); 
+        res.status(404).json(err2); 
       } else {
-        res.json(rows); 
+        res.status(200).json(rows); 
+        //res.send(JSON.stringify({"status": 200, "error": null, "response": rows}));
       }
     });
     connection.release();
